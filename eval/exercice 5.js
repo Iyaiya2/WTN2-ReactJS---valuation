@@ -9,7 +9,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { createStore } from "redux";
+import { legacy_createStore as createStore} from 'redux'
 
 const initialState = { theme: "light" };
 
