@@ -1,24 +1,137 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Link, useParams } from "react-router-dom";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { legacy_createStore as createStore } from "redux";
+import axios from "axios";
+
+const initialState = { theme: "light" };
+
+function themeReducer(state = initialState, action) {
+  switch (action.type) {
+    case "TOGGLE_THEME":
+      return { theme: state.theme === "light" ? "dark" : "light" };
+    default:
+      return state;
+  }
+}
+
+const store = createStore(themeReducer);
+
+
+function Navigation() {
+  return (
+    <nav>
+      <ul>
+        <li><Link to="/">Accueil</Link></li>
+      </ul>
+    </nav>
+  );
+}
+
+
+function PlantCard({ plant }) {
+  return (
+    <div>
+      <h3>{plant.name}</h3>
+      <p><strong>Espèce:</strong> {plant.species}</p>
+      <p>{plant.description}</p>
+      <Link to={`/plant/${plant.id}`}>Voir détails</Link>
+    </div>
+  );
+}
+
+
+function PlantList({ plants }) {
+  return (
+    <div>
+      {plants.map((plant, index) => (
+        <PlantCard key={index} plant={plant} />
+      ))}
+    </div>
+  );
+}
+
+
+function PlantCollection() {
+  const [plants, setPlants] = React.useState([]);
+  const [newPlant, setNewPlant] = React.useState({ name: "", species: "", description: "" });
+
+  const addPlant = (event) => {
+    event.preventDefault();
+    if (!newPlant.name || !newPlant.species) return;
+    setPlants([...plants, { ...newPlant, id: plants.length + 1 }]);
+    setNewPlant({ name: "", species: "", description: "" });
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setNewPlant({ ...newPlant, [name]: value });
+  };
+
+  return (
+    <div>
+      <h1>Ma Collection de Plantes</h1>
+      <form onSubmit={addPlant}>
+        <input type="text" name="name" placeholder="Nom" value={newPlant.name} onChange={handleChange} required />
+        <input type="text" name="species" placeholder="Espèce" value={newPlant.species} onChange={handleChange} required />
+        <textarea name="description" placeholder="Description" value={newPlant.description} onChange={handleChange} />
+        <button type="submit">Ajouter</button>
+      </form>
+      <PlantList plants={plants} />
+    </div>
+  );
+}
+
+
+function PlantDetails() {
+  const { id } = useParams();
+  const [plant, setPlant] = React.useState(null);
+
+  React.useEffect(() => {
+    axios.get(`https://trefle.io/api/v1/plants/${id}?token=YOUR_API_KEY`)
+      .then(response => {
+        setPlant(response.data.data);
+      })
+      .catch(error => console.error("Erreur lors du chargement de la plante", error));
+  }, [id]);
+
+  if (!plant) return <p>Chargement...</p>;
+
+  return (
+    <div>
+      <h2>{plant.common_name}</h2>
+      <p><strong>Espèce:</strong> {plant.scientific_name}</p>
+      <p>{plant.family}</p>
+      {plant.image_url && <img src={plant.image_url} alt={plant.common_name} style={{ maxWidth: "100%" }} />}
+    </div>
+  );
+}
+
+
+function ThemeToggle() {
+  const dispatch = useDispatch();
+  const theme = useSelector((state) => state.theme);
+
+  return (
+    <button onClick={() => dispatch({ type: "TOGGLE_THEME" })}>
+      Mode {theme === "light" ? "Sombre" : "Clair"}
+    </button>
+  );
+}
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <Navigation />
+        <ThemeToggle />
+        <Routes>
+          <Route path="/" element={<PlantCollection />} />
+          <Route path="/plant/:id" element={<PlantDetails />} />
+        </Routes>
+      </Router>
+    </Provider>
   );
 }
 

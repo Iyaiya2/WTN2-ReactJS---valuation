@@ -1,13 +1,118 @@
+/* App.css */
+
 body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 20px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+nav {
+  background-color: #4caf50;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav li {
+  display: inline;
+  margin-right: 15px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.PlantCard {
+  background-color: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.PlantCard h3 {
+  margin-top: 0;
+}
+
+.PlantCard a {
+  color: #4caf50;
+  text-decoration: none;
+}
+
+.PlantCard a:hover {
+  text-decoration: underline;
+}
+
+body.dark {
+  background-color: #333;
+  color: #f0f0f0;
+}
+
+body.dark nav {
+  background-color: #555;
+}
+
+body.dark form {
+  background-color: #444;
+}
+
+body.dark input[type="text"],
+body.dark textarea {
+  background-color: #666;
+  color: white;
+  border: 1px solid #888;
+}
+
+body.dark button {
+  background-color: #555;
+}
+
+body.dark button:hover {
+  background-color: #666;
+}
+
+body.dark .PlantCard {
+  background-color: #444;
+  border: 1px solid #666;
 }

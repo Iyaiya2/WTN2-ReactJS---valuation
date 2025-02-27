@@ -1,3 +1,11 @@
+//mplémenter la navigation avec React Router, pour créez deux pages :
+//Page d'accueil (liste des plantes)
+//Page de détails d'une plante
+//Créez un composant Navigation (ou Navbar) avec des liens vers ces deux pages et intégrez-le dans votre application.
+
+//Exercice 3
+
+
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 
